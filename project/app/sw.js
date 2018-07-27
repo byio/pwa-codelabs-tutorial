@@ -13,3 +13,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+
+// import workbox from cdn
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.0.0/workbox-sw.js');
+
+// 
+if (workbox) {
+  console.log(`workbox loaded!`);
+  workbox.precaching.precacheAndRoute([]);
+} else {
+  console.log(`oops! workbox didn't load.`);
+}

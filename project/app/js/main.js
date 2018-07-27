@@ -14,7 +14,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-// TODO - register service worker
+// register service-worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js')
+      .then(registration => {
+        console.log(`Service worker registered! Scope: ${registration.scope}`);
+      })
+      .catch(err => {
+        console.log(`Service worker registration failed: ${err}`);
+      });
+  });
+}
 
 const container = document.getElementById('container');
 const offlineMessage = document.getElementById('offline');

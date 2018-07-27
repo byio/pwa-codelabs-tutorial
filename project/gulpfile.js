@@ -15,6 +15,7 @@ limitations under the License.
 */
 const gulp = require('gulp');
 const del = require('del');
+const workboxBuild = require('workbox-build');
 
 // Clean "build" directory
 const clean = () => {
@@ -28,10 +29,27 @@ const copy = () => {
 };
 gulp.task('copy', copy);
 
-// TODO - add "service worker" task here
+// "service-worker" task to generate precache manifest
+gulp.task('service-worker', () => {
+  return workboxBuild.injectManifest({
+    swSrc: 'app/sw.js',
+    swDest: 'build/sw.js',
+    globDirectory: 'build',
+    globPatterns: [
+      'style/main.css',
+      'index.html',
+      'js/idb-promised.js',
+      'js/main.js',
+      'images/**/*.*',
+      'manifest.json'
+    ]
+  }).catch(err => {
+    console.log('[ERROR]: ' + err);
+  });
+});
 
 // This is the app's build process
-const build = gulp.series('clean', 'copy');
+const build = gulp.series('clean', 'copy', 'service-worker');
 gulp.task('build', build);
 
 // Watch our "app" files & rebuild whenever they change

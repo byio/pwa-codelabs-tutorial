@@ -73,6 +73,15 @@ function loadContentNetworkFirst() {
   getServerData()
   .then(dataFromNetwork => {
     updateUI(dataFromNetwork);
+    saveEventDataLocally(dataFromNetwork)
+      .then(() => {
+        setLastUpdated(new Date());
+        messageDataSaved();
+      })
+      .catch(err => {
+        messageSaveError();
+        console.warn(err);
+      });
   }).catch(err => { // if we can't connect to the server...
     console.log('Network requests have failed, this is expected if offline');
   });

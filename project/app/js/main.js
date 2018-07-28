@@ -109,7 +109,8 @@ function addAndPostEvent(e) {
   };
   updateUI([data]);
 
-  // TODO - save event data locally
+  // save event data locally
+  saveEventDataLocally([data]);
 
   const headers = new Headers({'Content-Type': 'application/json'});
   const body = JSON.stringify(data);

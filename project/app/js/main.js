@@ -14,6 +14,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+function createIndexedDB() {
+  if (!('indexedDB' in window)) {
+    return null;
+  }
+  return idb.open('dashboardr', 1, function(upgradeDb) {
+    if (!upgradeDb.objectStoreNames.contains('events')) {
+      const eventsOS = upgradeDb.createObjectStore('events', { keyPath: 'id' });
+    };
+  });
+}
+
 // register service-worker
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
@@ -38,7 +49,8 @@ addEventButton.addEventListener('click', addAndPostEvent);
 
 Notification.requestPermission();
 
-// TODO - create indexedDB database
+// create indexedDB database
+const dbPromise = createIndexedDB();
 
 loadContentNetworkFirst();
 

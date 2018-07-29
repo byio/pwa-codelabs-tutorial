@@ -95,6 +95,15 @@ function loadContentNetworkFirst() {
       });
   }).catch(err => { // if we can't connect to the server...
     console.log('Network requests have failed, this is expected if offline');
+    getLocalEventData()
+      .then(offlineData => {
+        if (!offlineData.length) {
+          messageNoData();
+        } else {
+          messageOffline();
+          updateUI(offlineData);
+        }
+      })
   });
 }
 

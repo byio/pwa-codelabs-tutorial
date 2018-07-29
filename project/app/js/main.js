@@ -29,6 +29,17 @@ function saveEventDataLocally(events) {
   });
 }
 
+function getLocalEventData() {
+  if (!('indexedDB' in window)) {
+    return null;
+  }
+  return dbPromise.then(db => {
+    const tx = db.transaction('events', 'readonly');
+    const store = tx.objectStore('events');
+    return store.getAll();
+  });
+}
+
 function createIndexedDB() {
   if (!('indexedDB' in window)) {
     return null;

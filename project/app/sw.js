@@ -21,8 +21,20 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.0.0/workbox
 if (workbox) {
   console.log(`workbox loaded!`);
   workbox.precaching.precacheAndRoute([]);
+  const showNotification = () => {
+    self.registration.showNotification('Background sync success!', {
+      body: '🎉`'
+    });
+  };
   // set up workbox-background-sync
-  const bgSyncPlugin = new workbox.backgroundSync.Plugin('dashboardr-queue');
+  const bgSyncPlugin = new workbox.backgroundSync.Plugin(
+    'dashboardr-queue',
+    {
+      callbacks: {
+        queueDidReplay: showNotification
+      }
+    }
+  );
   // add plugin to the config of handler
   const networkWithBackgroundSync = new workbox.strategies.NetworkOnly({
     plugins: [bgSyncPlugin],

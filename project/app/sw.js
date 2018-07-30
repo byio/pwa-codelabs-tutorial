@@ -17,10 +17,22 @@ limitations under the License.
 // import workbox from cdn
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.0.0/workbox-sw.js');
 
-// 
+//
 if (workbox) {
   console.log(`workbox loaded!`);
   workbox.precaching.precacheAndRoute([]);
+  // set up workbox-background-sync
+  const bgSyncPlugin = new workbox.backgroundSync.Plugin('dashboardr-queue');
+  // add plugin to the config of handler
+  const networkWithBackgroundSync = new workbox.strategies.NetworkOnly({
+    plugins: [bgSyncPlugin],
+  });
+  // create and register route using handler and api endpoint
+  workbox.routing.registerRoute(
+    /\/api\/add/,
+    networkWithBackgroundSync,
+    'POST'
+  );
 } else {
   console.log(`oops! workbox didn't load.`);
 }
